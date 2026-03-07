@@ -9,9 +9,9 @@
         <input id="chat-message-input" type="text">
         <input id="chat-message-submit" type="submit" value="Prześlij">
     </div>
-    <script>
-        var url = 'ws://' + window.location.host +
-                '/ws/chat/room/' + '{{ course.id }}/';
-      var chatSocket = new WebSocket(url);
-    </script>
+{% endblock %}
+
+{% block domready %}
+    let url = 'ws://' + window.location.host + '/ws/chat/room/' + '{{ course.id }}/';
+    let chatSocket = new WebSocket(url);
 {% endblock %}
