@@ -14,4 +14,42 @@
 {% block domready %}
     let url = 'ws://' + window.location.host + '/ws/chat/room/' + '{{ course.id }}/';
     let chatSocket = new WebSocket(url);
+
+    chatSocket.onmessage = function(e) {
+        let data = JSON.parse(e.data);
+        let message = data.message;
+
+        let $chat = $('#chat');
+        $chat.append('<div class="message">' + message + '</div>');
+        $chat.scrollTop($chat[0].scrollHeight);
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Nastąpiło nieoczekiwane zamknięcie gniazda czatu');
+    };
+
+    let $input = $('#chat-message-input');
+    let $submit = $('#chat-message-submit');
+
+    $submit.click(function() {
+        let message = $input.val();
+        if(message) {
+            // Wysyłanie wiadomości w formacie JSON.
+            chatSocket.send(JSON.stringify({'message': message}));
+
+            // Wyczyszczenie pola tekstowego.
+            $input.val('');
+
+            // Zwrócenie fokusu.
+            $input.focus();
+        }
+    });
+
+    $input.focus();
+    $input.keyup(function(e) {
+        if (e.which === 13) {
+            // Prześlij formularz po wciśnięciu klawisza Enter (Return).
+            $submit.click();
+            }
+        });
 {% endblock %}
