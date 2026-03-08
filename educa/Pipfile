@@ -15,6 +15,7 @@ django-memcache-status = "*"
 djangorestframework = "*"
 channels = "*"
 daphne = "*"
+channels-redis = "*"
 
 [requires]
 python_version = "3.9"
